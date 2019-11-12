@@ -82,6 +82,13 @@ def app(base_app, request):
 
 
 @pytest.fixture()
+def access_app(app):
+    InvenioAccess(app)
+    with app.test_request_context():
+        yield app
+
+
+@pytest.fixture()
 def script_info(app):
     """Get ScriptInfo object for testing CLI."""
     action_open = ActionNeed('open')
@@ -107,7 +114,7 @@ def script_info_cli_list(app):
 
 @pytest.fixture()
 def dynamic_permission():
-    """Dyanmic permission fixture."""
+    """Dynamic permission fixture."""
     def _get_dynamic_permission(*args):
         """Get dynamic permission."""
         return DynamicPermission(*args)
